@@ -65,9 +65,14 @@ class DataTransformation:
 
             logging.info("Read train and test data complete")
 
+            for df in [train_df, test_df]:
+                df["average_score"] = (
+                    df["math score"] + df["writing score"] + df["reading score"]
+                ) / 3
+
             preprocessing_obj = self.get_data_transformer_object()
-            target_column_name = "math score"
-            numerical_columns = ['writing score', 'reading score']
+            target_column_name = "average_score"
+            numerical_columns = ['writing score', 'reading score', 'math score']
 
             input_feature_train_df = train_df.drop(columns = [target_column_name], axis = 1)
             target_feature_train_df = train_df[target_column_name]

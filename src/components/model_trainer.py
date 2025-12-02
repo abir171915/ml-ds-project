@@ -44,8 +44,35 @@ class ModelTrainer:
                 "CatBoosting Classifier" : CatBoostRegressor(verbose = False),
                 "AdaBoost Classifier" : AdaBoostRegressor(),
             }
+            params = {
+                "Random Forest" : {
+                    "n_estimators": [50, 100, 200],
+                    "max_depth": [None, 5, 10],
+                },
+                "Decision Tree": {
+                    "max_depth": [None, 5, 10],
+                },
+                "Gradient Boosting": {
+                    "learning_rate": [0.01, 0.05, 0.1],
+                    "n_estimators": [50, 100, 200],
+                },
+                "K-Neighbors Regressor": {
+                    "n_estimators": [50, 100, 200],
+                    "learning_rate": [0.01, 0.05, 0.1],
+                    "max_depth": [3, 5, 7],
+                },
+                "CatBoost Regressor": {
+                    "depth": [4, 6, 8],
+                    "learning_rate": [0.01, 0.05, 0.1],
+                    "iterations": [100, 200],
+                },
+                "AdaBoost Regressor": {
+                    "n_estimators": [50, 100, 200],
+                    "learning_rate": [0.01, 0.05, 0.1],
+                },
+            }
 
-            model_report : dict = evaluate_models( X_train = X_train, y_train = y_train, X_test= X_test, y_test = y_test, models = models)
+            model_report : dict = evaluate_models( X_train = X_train, y_train = y_train, X_test= X_test, y_test = y_test, models = models, params = params)
 
             best_model_score = max(sorted(model_report.values()))
             best_model_name = list(model_report.keys())[
@@ -56,6 +83,8 @@ class ModelTrainer:
             if best_model_score < 0.6:
                 raise CustomException("No best model found")
             logging.info(f"Best model found on both training and testing dataset")
+
+            best_model.fit(X_train, y_train)
             
             save_object(
                 file_path = self.model_trainer_config.train_model_file_path,

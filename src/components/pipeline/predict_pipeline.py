@@ -16,8 +16,8 @@ class PredictPipeline:
         features: pandas DataFrame with the same columns as training data (except target).
         """
         try:
-            model_path = os.path.join("artifacts", "model.pkl")
-            preprocessor_path = os.path.join("artifacts", "preprocessor.pkl")
+            model_path = os.path.join("src", "components", "artifacts", "model.pkl")
+            preprocessor_path = os.path.join("src", "components", "artifacts", "preprocessor.pkl")
 
             print("Before Loading")
             model = load_object(file_path=model_path)
